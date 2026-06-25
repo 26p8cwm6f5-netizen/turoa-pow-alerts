@@ -1,18 +1,13 @@
 name: Turoa Pow Alerts
 
-# Runs twice a day, free, on GitHub's servers. No computer of yours needs to be on.
 on:
   schedule:
-    - cron: '0 18 * * *'   # 06:00 NZST - dawn patrol (today) + go-time calls
-    - cron: '0 7 * * *'    # 19:00 NZST - night-before (tomorrow) + watch flags
-  workflow_dispatch: {}     # adds a manual "Run workflow" button for testing
+    - cron: '0 18 * * *'
+    - cron: '0 7 * * *'
+  workflow_dispatch: {}
 
 permissions:
-  contents: write           # lets the bot save state.json so it never double-pings you
-
-concurrency:
-  group: turoa-pow
-  cancel-in-progress: false
+  contents: write
 
 jobs:
   check-pow:
@@ -30,5 +25,7 @@ jobs:
         run: python3 turoa_pow_alerts.py
 
       - name: Remember what we already alerted
-        run: |
-          if [ -n "$(git
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: pow update state
+          file_pattern: state.json
