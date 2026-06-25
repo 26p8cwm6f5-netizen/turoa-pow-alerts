@@ -1,1 +1,15 @@
-
+name: TEST - Pow Alert
+on:
+  workflow_dispatch: {}
+jobs:
+  test-alert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fire a test alert
+        run: |
+          curl -s \
+            -H "Title: TEST Turoa Pow Alert" \
+            -H "Priority: max" \
+            -H "Tags: snowboarder" \
+            -d "TEST SEND IT -- the whole chain works end to end. GitHub fired this through ntfy to your phone by itself. No real snow yet, just proof the pipe is live. Go shred this season." \
+            "https://ntfy.sh/turoa-pow-shred-4471"
