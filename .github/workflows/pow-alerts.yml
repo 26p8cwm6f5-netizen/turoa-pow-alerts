@@ -1,31 +1,18 @@
 name: Turoa Pow Alerts
-
 on:
   schedule:
     - cron: '0 18 * * *'
     - cron: '0 7 * * *'
   workflow_dispatch: {}
-
-permissions:
-  contents: write
-
 jobs:
   check-pow:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
       - name: Check the pow
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
         run: python3 turoa_pow_alerts.py
-
-      - name: Remember what we already alerted
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: pow update state
-          file_pattern: state.json
